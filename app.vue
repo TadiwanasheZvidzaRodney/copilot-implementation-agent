@@ -4,7 +4,8 @@ import { marked } from 'marked'
 const projectDescription = ref('')
 const generatedPlan = ref('')
 const isLoading = ref(false)
-const error = ref('')
+
+const toast = useToast()
 
 // Configure marked for safe rendering
 marked.setOptions({
@@ -18,11 +19,13 @@ const renderedMarkdown = computed(() => {
 })
 
 async function generatePlan() {
-  if (!projectDescription.value.trim()) return
+  if (!projectDescription.value.trim()) {
+    toast.warning('Missing Input', 'Please enter a project description.')
+    return
+  }
   
   isLoading.value = true
   generatedPlan.value = ''
-  error.value = ''
 
   try {
     const data = await $fetch('/api/plan', {
@@ -30,9 +33,19 @@ async function generatePlan() {
       body: { projectDescription: projectDescription.value }
     })
     generatedPlan.value = data.markdown
+    toast.success('Plan Generated!', 'Your implementation plan is ready.')
   } catch (err: any) {
     console.error(err)
-    error.value = err.data?.message || 'An error occurred while generating the plan. Please try again.'
+    const errorMessage = err.data?.message || err.message || 'An error occurred'
+    
+    // Handle specific error types
+    if (errorMessage.includes('429') || errorMessage.includes('quota') || errorMessage.includes('rate')) {
+      toast.warning('Rate Limit Reached', 'API quota exceeded. Please wait a moment and try again.')
+    } else if (errorMessage.includes('403') || errorMessage.includes('authentication') || errorMessage.includes('API Key')) {
+      toast.error('Authentication Error', 'Invalid API key. Please check your configuration.')
+    } else {
+      toast.error('Generation Failed', errorMessage)
+    }
   } finally {
     isLoading.value = false
   }
@@ -40,16 +53,20 @@ async function generatePlan() {
 
 function clearPlan() {
   generatedPlan.value = ''
-  error.value = ''
+  toast.info('Cleared', 'Ready for a new project description.')
 }
 
 function copyToClipboard() {
   navigator.clipboard.writeText(generatedPlan.value)
+  toast.success('Copied!', 'Plan copied to clipboard.')
 }
 </script>
 
 <template>
   <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100">
+    <!-- Toast Notifications -->
+    <ToastContainer />
+    
     <!-- Background Pattern -->
     <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMtNi42MjcgMC0xMiA1LjM3My0xMiAxMnM1LjM3MyAxMiAxMiAxMiAxMi01LjM3MyAxMi0xMi01LjM3My0xMi0xMi0xMnptMCAyYzUuNTIzIDAgMTAgNC40NzcgMTAgMTBzLTQuNDc3IDEwLTEwIDEwLTEwLTQuNDc3LTEwLTEwIDQuNDc3LTEwIDEwLTEweiIgZmlsbD0iIzMzNDA1NSIgZmlsbC1vcGFjaXR5PSIuMyIvPjwvZz48L3N2Zz4=')] opacity-20"></div>
     
@@ -114,17 +131,6 @@ Example: 'Build a task management app with user authentication, real-time collab
                 {{ isLoading ? 'Generating Plan...' : 'Generate Plan' }}
               </button>
             </div>
-          </div>
-        </div>
-
-        <!-- Error Alert -->
-        <div v-if="error" class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex items-start gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <div>
-            <h3 class="font-semibold text-red-400">Error</h3>
-            <p class="text-red-300/80 text-sm">{{ error }}</p>
           </div>
         </div>
 
