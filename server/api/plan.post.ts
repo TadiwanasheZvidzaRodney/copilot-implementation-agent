@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   // Initialize the free-tier Gemini model
   const ai = new GoogleGenerativeAI(config.geminiApiKey)
   const model = ai.getGenerativeModel({ 
-    model: 'gemini-1.5-flash', // Fast and free-tier compliant
+    model: 'gemini-2.0-flash', // Updated model name
     systemInstruction: systemPrompt 
   })
 
