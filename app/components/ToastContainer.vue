@@ -25,31 +25,31 @@ const iconStyleMap = {
 
 <template>
   <Teleport to="body">
-    <div class="fixed top-4 right-4 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+    <div class="fixed top-4 left-4 right-4 sm:left-auto sm:right-4 z-50 flex flex-col gap-2 sm:gap-3 sm:max-w-sm sm:w-full pointer-events-none">
       <TransitionGroup
         enter-active-class="transform ease-out duration-300 transition"
-        enter-from-class="translate-x-full opacity-0"
-        enter-to-class="translate-x-0 opacity-100"
+        enter-from-class="translate-y-[-100%] sm:translate-y-0 sm:translate-x-full opacity-0"
+        enter-to-class="translate-y-0 sm:translate-x-0 opacity-100"
         leave-active-class="transition ease-in duration-200"
-        leave-from-class="translate-x-0 opacity-100"
-        leave-to-class="translate-x-full opacity-0"
+        leave-from-class="translate-y-0 sm:translate-x-0 opacity-100"
+        leave-to-class="translate-y-[-100%] sm:translate-y-0 sm:translate-x-full opacity-0"
       >
         <div
           v-for="toast in toasts"
           :key="toast.id"
           :class="[
-            'pointer-events-auto rounded-xl border p-4 shadow-2xl backdrop-blur-sm',
+            'pointer-events-auto rounded-xl border p-3 sm:p-4 shadow-2xl backdrop-blur-sm',
             styleMap[toast.type]
           ]"
         >
-          <div class="flex items-start gap-3">
+          <div class="flex items-start gap-2 sm:gap-3">
             <div 
               :class="['flex-shrink-0', iconStyleMap[toast.type]]"
               v-html="iconMap[toast.type]"
             />
             <div class="flex-1 min-w-0">
               <p class="font-semibold text-sm text-white">{{ toast.title }}</p>
-              <p v-if="toast.message" class="mt-1 text-xs text-gray-400 line-clamp-3">{{ toast.message }}</p>
+              <p v-if="toast.message" class="mt-0.5 sm:mt-1 text-xs text-gray-400 line-clamp-2 sm:line-clamp-3">{{ toast.message }}</p>
             </div>
             <button
               @click="remove(toast.id)"
