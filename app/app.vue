@@ -180,7 +180,7 @@ Example: 'Build a task management app with user authentication, real-time collab
       <!-- Footer -->
       <footer class="w-full max-w-5xl mt-12 pt-8 border-t border-neutral-800 text-center">
         <p class="text-gray-500 text-sm">
-          Powered by <span class="text-white">Google Gemini AI</span> • Built with <span class="text-white">❤️</span> by <a href="https://www.linkedin.com/in/tadiwanashe-zvidza-48583424b/" target="_blank" rel="noopener noreferrer" class="text-white hover:underline">Tadiwanashe</a>
+          Powered by <span class="text-white">Hugging Face AI</span> • Built with <span class="text-white">❤️</span> by <a href="https://www.linkedin.com/in/tadiwanashe-zvidza-48583424b/" target="_blank" rel="noopener noreferrer" class="text-white hover:underline">Tadiwanashe</a>
         </p>
       </footer>
     </div>

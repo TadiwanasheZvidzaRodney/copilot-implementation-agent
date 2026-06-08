@@ -11,25 +11,26 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Nuxt-3-000000?style=for-the-badge&logo=nuxt.js&logoColor=white" alt="Nuxt 3" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-000000?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-  <img src="https://img.shields.io/badge/Google_Gemini-000000?style=for-the-badge&logo=google&logoColor=white" alt="Google Gemini" />
+  <img src="https://img.shields.io/badge/Hugging_Face-000000?style=for-the-badge&logo=huggingface&logoColor=white" alt="Hugging Face" />
 </p>
 
 ---
 
 ## ✨ Features
 
-- 🚀 **AI-Powered Planning** - Leverages Google's Gemini 1.5 Flash model for intelligent plan generation
+- 🚀 **AI-Powered Planning** - Leverages Meta Llama 3 8B Instruct via Hugging Face Inference API (free tier!)
 - 📋 **Phased Implementation** - Generates structured, chronological phases for project execution
-- 🎨 **Beautiful UI** - Modern, dark-themed interface with Tailwind CSS
+- 🎨 **Beautiful UI** - Modern, minimalistic black & white interface with Tailwind CSS
 - 📱 **Responsive Design** - Works seamlessly on desktop and mobile devices
 - 📝 **Markdown Rendering** - Professional formatting with syntax highlighting
 - 📋 **Copy to Clipboard** - Easily copy generated plans for documentation
+- 🆓 **Zero Cost** - Uses Hugging Face Serverless Inference (completely free)
 
 ## 🛠️ Tech Stack
 
 - **Framework:** Nuxt 3
 - **Styling:** Tailwind CSS with Typography plugin
-- **AI:** Google Generative AI (Gemini 1.5 Flash)
+- **AI:** Hugging Face Inference API (Meta Llama 3 8B Instruct)
 - **Markdown:** Marked.js
 
 ## 🚀 Getting Started
@@ -38,7 +39,7 @@
 
 - Node.js 18+ 
 - npm or yarn
-- Google Gemini API key (free tier available)
+- Hugging Face API token (free)
 
 ### Installation
 
@@ -49,12 +50,12 @@
 
 2. **Configure environment variables**
    
-   Edit `.env` and add your API key:
+   Edit `.env` and add your API token:
    ```env
-   GEMINI_API_KEY=your_gemini_api_key_here
+   NUXT_HF_TOKEN=your_huggingface_access_token
    ```
 
-   > 💡 Get your free Gemini API key at [Google AI Studio](https://aistudio.google.com/apikey)
+   > 💡 Get your free Hugging Face token at [Hugging Face Settings](https://huggingface.co/settings/tokens)
 
 3. **Start the development server**
    ```bash
@@ -93,14 +94,18 @@ Tech preferences: Vue.js, Supabase, Tailwind CSS
 
 ```
 copilot-implementation-agent/
-├── app.vue                    # Main application component
-├── nuxt.config.ts             # Nuxt configuration
-├── tailwind.config.ts         # Tailwind CSS configuration
+├── app/
+│   ├── app.vue                # Main application component
+│   ├── components/            # Vue components (ToastContainer)
+│   └── composables/           # Composables (useToast)
 ├── server/
 │   ├── api/
 │   │   └── plan.post.ts       # API endpoint for plan generation
 │   └── utils/
 │       └── copilot-implementation-agent.md  # AI system prompt
+├── public/                    # Static assets (logos, icons)
+├── nuxt.config.ts             # Nuxt configuration
+├── tailwind.config.ts         # Tailwind CSS configuration
 ├── .env                       # Environment variables
 └── package.json
 ```
@@ -111,7 +116,7 @@ copilot-implementation-agent/
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `GEMINI_API_KEY` | Your Google Gemini API key | Yes |
+| `NUXT_HF_TOKEN` | Your Hugging Face API token | Yes |
 
 ### Customizing the AI Prompt
 
@@ -141,7 +146,7 @@ npm i -g vercel
 vercel
 ```
 
-Don't forget to set the `GEMINI_API_KEY` environment variable in your deployment platform.
+Don't forget to set the `NUXT_HF_TOKEN` environment variable in your deployment platform.
 
 ## 📄 License
 
@@ -153,4 +158,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-Built with ❤️ using [Nuxt 3](https://nuxt.com) and [Google Gemini](https://deepmind.google/technologies/gemini/)
+Built with ❤️ using [Nuxt 3](https://nuxt.com) and [Hugging Face](https://huggingface.co/)

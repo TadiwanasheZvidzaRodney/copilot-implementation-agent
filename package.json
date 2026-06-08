@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
+    "@huggingface/inference": "^4.13.18",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@tailwindcss/typography": "^0.5.19",
     "marked": "^18.0.5",
