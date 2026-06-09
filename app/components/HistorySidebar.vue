@@ -10,7 +10,8 @@ const emit = defineEmits<{
   (e: 'select', plan: SavedPlan): void
 }>()
 
-const { savedPlans, deletePlan, exportPlan, clearAllPlans, exportAllPlans } = useHistory()
+const { savedPlans, deletePlan, exportPlan, clearAllPlans, exportAllPlans, isCloudSynced, isSyncing } = useHistory()
+const { isAuthenticated, isConfigured } = useAuth()
 const toast = useToast()
 
 const formatDate = (dateString: string) => {
@@ -28,9 +29,9 @@ const handleSelect = (plan: SavedPlan) => {
   emit('close')
 }
 
-const handleDelete = (id: string, event: Event) => {
+const handleDelete = async (id: string, event: Event) => {
   event.stopPropagation()
-  deletePlan(id)
+  await deletePlan(id)
   toast.info('Deleted', 'Plan removed from history.')
 }
 
@@ -40,9 +41,9 @@ const handleExport = (plan: SavedPlan, event: Event) => {
   toast.success('Exported', 'Plan downloaded as Markdown file.')
 }
 
-const handleClearAll = () => {
+const handleClearAll = async () => {
   if (confirm('Are you sure you want to delete all saved plans?')) {
-    clearAllPlans()
+    await clearAllPlans()
     toast.info('Cleared', 'All plans have been deleted.')
   }
 }
@@ -180,8 +181,29 @@ const handleExportAll = () => {
       </div>
 
       <!-- Footer -->
-      <div class="p-3 border-t border-neutral-800 text-center">
-        <p class="text-gray-600 text-xs">
+      <div class="p-3 border-t border-neutral-800">
+        <!-- Sync Status -->
+        <div v-if="isSyncing" class="flex items-center justify-center gap-2 text-gray-400 text-xs mb-2">
+          <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+          Syncing...
+        </div>
+        <div v-else-if="isAuthenticated && isCloudSynced" class="flex items-center justify-center gap-1.5 text-gray-400 text-xs mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Synced to cloud
+        </div>
+        <div v-else-if="isConfigured && !isAuthenticated" class="flex items-center justify-center gap-1.5 text-gray-500 text-xs mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          Sign in to sync
+        </div>
+        
+        <p class="text-gray-600 text-xs text-center">
           {{ savedPlans.length }} saved plan{{ savedPlans.length === 1 ? '' : 's' }}
         </p>
       </div>

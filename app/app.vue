@@ -8,7 +8,21 @@ const isLoading = ref(false)
 const isSidebarOpen = ref(false)
 
 const toast = useToast()
-const { savePlan } = useHistory()
+const { savePlan, syncPlans } = useHistory()
+const { initAuth, isAuthenticated } = useAuth()
+
+// Initialize auth on mount
+onMounted(async () => {
+  await initAuth()
+})
+
+// Sync plans when auth state changes
+watch(isAuthenticated, async (authenticated) => {
+  if (authenticated) {
+    await syncPlans()
+    toast.success('Synced', 'Your plans are now synced to the cloud.')
+  }
+})
 
 // Configure marked for safe rendering
 marked.setOptions({
@@ -38,7 +52,7 @@ async function generatePlan() {
     generatedPlan.value = data.markdown
     
     // Auto-save the generated plan
-    savePlan(projectDescription.value, data.markdown)
+    await savePlan(projectDescription.value, data.markdown)
     
     toast.success('Plan Generated!', 'Your implementation plan is ready and saved.')
   } catch (err: any) {
@@ -98,6 +112,11 @@ function handleSelectPlan(plan: SavedPlan) {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     </button>
+
+    <!-- Auth Button - Desktop -->
+    <div class="hidden md:block fixed right-4 top-4 z-30">
+      <AuthButton />
+    </div>
     
     <!-- Background Pattern -->
     <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMtNi42MjcgMC0xMiA1LjM3My0xMiAxMnM1LjM3MyAxMiAxMiAxMiAxMi01LjM3MyAxMi0xMi01LjM3My0xMi0xMi0xMnptMCAyYzUuNTIzIDAgMTAgNC40NzcgMTAgMTBzLTQuNDc3IDEwLTEwIDEwLTEwLTQuNDc3LTEwLTEwIDQuNDc3LTEwIDEwLTEweiIgZmlsbD0iIzIyMjIyMiIgZmlsbC1vcGFjaXR5PSIuMyIvPjwvZz48L3N2Zz4=')] opacity-20"></div>
@@ -117,7 +136,8 @@ function handleSelectPlan(plan: SavedPlan) {
             </svg>
           </button>
           <img src="/logo-white.svg" alt="Logo" class="w-10 h-auto" />
-          <div class="w-9"></div> <!-- Spacer for centering -->
+          <!-- Auth Button - Mobile -->
+          <AuthButton />
         </div>
         
         <!-- Desktop Header -->

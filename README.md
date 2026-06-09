@@ -25,12 +25,15 @@
 - 📝 **Markdown Rendering** - Professional formatting with syntax highlighting
 - 📋 **Copy to Clipboard** - Easily copy generated plans for documentation
 - 🆓 **Zero Cost** - Uses Hugging Face Serverless Inference (completely free)
+- 🔐 **Optional Cloud Sync** - Sign in with Google/GitHub to sync plans across devices (Supabase)
+- 💾 **Offline Support** - Works without signing in, plans saved locally
 
 ## 🛠️ Tech Stack
 
 - **Framework:** Nuxt 3
 - **Styling:** Tailwind CSS with Typography plugin
 - **AI:** Hugging Face Inference API (Meta Llama 3 8B Instruct)
+- **Auth & Database:** Supabase (optional, for cloud sync)
 - **Markdown:** Marked.js
 
 ## 🚀 Getting Started
@@ -96,13 +99,15 @@ Tech preferences: Vue.js, Supabase, Tailwind CSS
 copilot-implementation-agent/
 ├── app/
 │   ├── app.vue                # Main application component
-│   ├── components/            # Vue components (ToastContainer)
-│   └── composables/           # Composables (useToast)
+│   ├── components/            # Vue components (ToastContainer, AuthButton, etc.)
+│   └── composables/           # Composables (useToast, useAuth, useHistory, useSupabase)
 ├── server/
 │   ├── api/
 │   │   └── plan.post.ts       # API endpoint for plan generation
 │   └── utils/
 │       └── copilot-implementation-agent.md  # AI system prompt
+├── supabase/
+│   └── schema.sql             # Database schema for Supabase
 ├── public/                    # Static assets (logos, icons)
 ├── nuxt.config.ts             # Nuxt configuration
 ├── tailwind.config.ts         # Tailwind CSS configuration
@@ -117,6 +122,18 @@ copilot-implementation-agent/
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `NUXT_HF_TOKEN` | Your Hugging Face API token | Yes |
+| `NUXT_PUBLIC_SUPABASE_URL` | Supabase project URL | No (for cloud sync) |
+| `NUXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key | No (for cloud sync) |
+
+### Setting up Supabase (Optional)
+
+To enable cloud sync and authentication:
+
+1. Create a project at [supabase.com](https://supabase.com)
+2. Go to **SQL Editor** and run the schema from `supabase/schema.sql`
+3. Go to **Authentication > Providers** and enable Google/GitHub OAuth
+4. Copy your project URL and anon key from **Settings > API**
+5. Add them to your `.env` file
 
 ### Customizing the AI Prompt
 
@@ -147,6 +164,12 @@ vercel
 ```
 
 Don't forget to set the `NUXT_HF_TOKEN` environment variable in your deployment platform.
+
+For cloud sync, also add:
+- `NUXT_PUBLIC_SUPABASE_URL`
+- `NUXT_PUBLIC_SUPABASE_ANON_KEY`
+
+And configure OAuth redirect URLs in Supabase to include your production domain.
 
 ## 📄 License
 
