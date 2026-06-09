@@ -27,9 +27,9 @@ onMounted(() => {
 
 <template>
   <div ref="dropdownRef" class="relative">
-    <!-- Not configured state -->
+    <!-- Not configured state - hide completely -->
     <template v-if="!isConfigured">
-      <!-- Hide button if Supabase not configured -->
+      <!-- Supabase not configured, no auth button shown -->
     </template>
 
     <!-- Loading state -->
@@ -94,13 +94,13 @@ onMounted(() => {
       </Transition>
     </template>
 
-    <!-- Guest state -->
+    <!-- Guest state - Show sign in button -->
     <template v-else>
       <button
         @click="isAuthModalOpen = true"
-        class="flex items-center gap-2 px-3 py-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-xl transition-colors text-sm text-white"
+        class="flex items-center justify-center gap-2 p-2 sm:px-3 sm:py-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-xl transition-colors text-sm text-white min-w-[36px]"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
         <span class="hidden sm:inline">Sign In</span>
