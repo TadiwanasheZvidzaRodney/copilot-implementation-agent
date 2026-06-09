@@ -125,17 +125,17 @@ function handleSelectPlan(plan: SavedPlan) {
       <!-- Header -->
       <header class="w-full max-w-5xl mb-6 md:mb-8">
         <!-- Mobile Header with History Button -->
-        <div class="flex items-center justify-between md:hidden mb-4">
+        <div class="flex items-center justify-between md:hidden mb-4 pt-safe">
           <button
             @click="isSidebarOpen = true"
-            class="p-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-xl transition-colors"
+            class="p-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded-xl transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center"
             title="View History"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </button>
-          <img src="/logo-white.svg" alt="Logo" class="w-10 h-auto" />
+          <img src="/logo-white.svg" alt="Logo" class="w-10 h-auto flex-shrink-0" />
           <!-- Auth Button - Mobile -->
           <AuthButton />
         </div>

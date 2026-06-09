@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Safe area support for iOS devices */
+@supports (padding: env(safe-area-inset-top)) {
+  html {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Ensure touch targets are appropriately sized on mobile */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Prevent layout shift during hydration */
+.hydrating {
+  visibility: hidden;
+}
+
+/* Ensure body takes full viewport */
+html, body {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  overflow-x: hidden;
+}
+
+/* Fix for mobile browser address bar */
+body {
+  min-height: -webkit-fill-available;
+}
