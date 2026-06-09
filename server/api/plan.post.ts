@@ -94,7 +94,7 @@ export default defineEventHandler(async (event) => {
 
   // Validate HF token
   if (!config.hfToken) {
-    throw createError({ statusCode: 500, message: 'Hugging Face API token is not configured.' })
+    throw createError({ statusCode: 500, message: 'Hugging Face API token is not configured.' }) 
   }
 
   // Initialize the Hugging Face Inference client
